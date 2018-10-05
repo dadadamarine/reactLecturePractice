@@ -9,7 +9,14 @@ import VideoListItem from './video_list_item';
 const VideoList = (props) =>{
     const videoItems = props.videos.map( (video) => { 
         // 여기에 각 비디오의 요소에 접근하는 함수를 작성
-        return <VideoListItem key ={video.etag} video={video} />
+        return (
+            <VideoListItem 
+            onVideoSelect = {props.onVideoSelect}
+            // index.js 에서 건너온 속성을 다시 ListItem에 전달.
+            key ={video.etag} 
+            video={video} 
+            />
+        );
     });
     // const videoItems 결과 배열의 참조변수
    

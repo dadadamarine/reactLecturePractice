@@ -18,11 +18,18 @@ class App extends Component{
     constructor(props){
         super(props);
 
-        this.state={ videos: [] };
+        this.state={ 
+            videos: [],
+            selectedVideo : null // null로 시작.
+         };
 
         YTSearch({key:API_KEY, term : 'surfboard'}, (videos) => {
             //이 내부에서 state 초기 업데이트.
-            this.setState({ videos });
+            this.setState({ 
+                videos : videos,
+                selectedVideo :videos[0]
+            });
+            
             // 키와 value가 같은 string일때 
             //this.setState({ videos }); 사용가능
             // es6에서는 위와 같이 변형해서 인식.
@@ -32,8 +39,12 @@ class App extends Component{
         return ( 
             <div>
                 <SearchBar />
-                <VideoDetail video={this.state.videos[0]} />
-                <VideoList videos={this.state.videos}/>
+                <VideoDetail video={this.state.selectedVideo} />
+                <VideoList 
+                    /* 전달된 속성은 props.onVideoSelect로 받을수 있음. */
+                    onVideoSelect = {(selectedVideo) => this.setState({selectedVideo}) }
+                    videos={this.state.videos}
+                />
             </div>
             );
     }
