@@ -18,10 +18,10 @@ class SearchBar extends Component {
 
     render () {
         return (
-            <div className='search-bar' >
+            <div className='search-bar'>
                 <input 
                     value={this.state.term}
-                    onChange={e => this.setState({term: e.target.value})} />
+                    onChange={e => this.onInputChange(e.target.value)} />
                 {/* 여기서 value는, stat e가 변경되서 변경된 값이 반영되는것.
                     만약 onChange가 없다면, value값은 state값인 ''으로 고정이다. */}
 
@@ -33,6 +33,12 @@ class SearchBar extends Component {
         );
     }
 
+    onInputChange(term){
+/*      console.log('그대로', term);
+        console.log('괄호',{term}); */
+        this.setState({term}); // State값이 object니까, 파라미터를 object로 전달함.
+        this.props.onSearchTermChange(term);
+    }
 }
 
 export default SearchBar;

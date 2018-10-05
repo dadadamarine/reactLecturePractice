@@ -1,4 +1,5 @@
 import React , {Component} from 'react';
+import _ from 'lodash';
 import ReactDom from 'react-dom';
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search-bar';
@@ -23,7 +24,12 @@ class App extends Component{
             selectedVideo : null // null로 시작.
          };
 
-        YTSearch({key:API_KEY, term : 'surfboard'}, (videos) => {
+         this.videoSearch('surfboard');
+         //init search;
+    }
+
+    videoSearch(term){
+        YTSearch({key:API_KEY, term : term}, (videos) => {
             //이 내부에서 state 초기 업데이트.
             this.setState({ 
                 videos : videos,
@@ -35,10 +41,16 @@ class App extends Component{
             // es6에서는 위와 같이 변형해서 인식.
         });
     }
+
     render(){
+        const videoSearch = _.debounce( (term) => { this.videoSearch(term) } ,300);
+        // 파라미터로 func한개와 시간 전달.
+        // debounce : 전달한 함수를 뒤의 시간마다 실행하는 새 함수로 리턴.
         return ( 
             <div>
-                <SearchBar />
+                {/* <SearchBar onSearchTermChange = {term => this.videoSearch(term)}/> */}
+                <SearchBar onSearchTermChange = {videoSearch} />
+                {/* searchBar가 onSearchTerm~ 부를때, videoSearch가 실행됨.  */}
                 <VideoDetail video={this.state.selectedVideo} />
                 <VideoList 
                     /* 전달된 속성은 props.onVideoSelect로 받을수 있음. */
